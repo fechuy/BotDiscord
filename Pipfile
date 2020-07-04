@@ -9,6 +9,7 @@ verify_ssl = true
 "discord.py" = "*"
 python-dotenv = "*"
 pipfile = "*"
+db-sqlite3 = "*"
 
 [requires]
 python_version = "3.6"
