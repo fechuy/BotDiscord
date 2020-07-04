@@ -1,20 +1,27 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jul  2 11:12:38 2020
+import os
 
-@author: FELIPE.SANTANA
-"""
-
-import os, discord
+#import discord
+import random
 from dotenv import load_dotenv
+from discord.ext import commands
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='!')
 
-@client.event
-async def on_ready():
-    print(f'{client.user} se a conectado a discord :3')
-    
-client.run(TOKEN)
+@bot.command(name='99', help='Responds with a random quote from Brooklyn 99')
+async def nine_nine(ctx):
+    brooklyn_99_quotes = [
+        'I\'m the human form of the :100: emoji.',
+        'Bingpot!',
+        (
+            'Cool. Cool cool cool cool cool cool cool, '
+            'no doubt no doubt no doubt no doubt.'
+        ),
+    ]
+
+    response = random.choice(brooklyn_99_quotes)
+    await ctx.send(response)
+
+bot.run(TOKEN)
