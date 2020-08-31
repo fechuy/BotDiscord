@@ -6,10 +6,15 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-"discord.py" = "*"
 python-dotenv = "*"
-pipfile = "*"
 db-sqlite3 = "*"
+lavalink = "*"
+"discord.py" = {extras = ["voice"], version = "*"}
+youtube-dl = "*"
 
 [requires]
 python_version = "3.6"
+
+
+[scripts]
+dev = "nodemon --exec python ./src/bot.py"
