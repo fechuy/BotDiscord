@@ -1,6 +1,4 @@
 import os
-
-#import discord
 import random
 import discord
 from discord.ext import commands
@@ -11,6 +9,17 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix='!')
 
+
+class YukiBot(discord.Client):
+    @bot.event
+    async def on_ready(self):
+        print('{0} se ha iniciado :D!'.format(self.user))
+
+    @bot.command(name='hi')
+    async def saludo(self, ctx):
+        await ctx.send("Hola")
+
+"""
 @bot.event
 async def on_ready():
     print('Yukibot online :D!')
@@ -29,13 +38,8 @@ async def nine_nine(ctx):
 
     response = random.choice(brooklyn_99_quotes)
     await ctx.send(response)
-    
-@bot.command(name='saludo', help='Comando para saludar :D')
-async def hi(ctx):
-    saludo = 'Hola a todos :D!!!'
-    await ctx.send(saludo)
+"""
+yukiClient = YukiBot()
+yukiClient.run(TOKEN)
 
-#Apartado para poner musica
-  
-
-bot.run(TOKEN)
+#bot.run(TOKEN)
