@@ -10,10 +10,10 @@ Por el momento el bot cuenta con los comandos basicos de musica, estos comandos 
 
 Los comandos integrados hasta Agosto 2020 son:
 
-play
-skip
-stop
-queue
+*play
+*skip
+*stop
+*queue
 
 ===========================================================================
 
@@ -21,15 +21,15 @@ __Uso__
 
 Este bot utiliza las siguientes tecnologias:
 
-Python v3.6
-discord.py v1.4.1
-lavalink v3.3.1.1
-java jdk min jdk11
-nodemon v2.0.4
-pipenv v2018.11.26
+*Python v3.6
+*discord.py v1.4.1
+*lavalink v3.3.1.1
+*java jdk min jdk11
+*nodemon v2.0.4
+*pipenv v2018.11.26
 
 Todos los programas estan dentro del Pipfile, se instalan con el entorno virtual pipenv, menos nodemon y el jdk.
-Para ese se debera instalar node.js [node.js](https://nodejs.org/es/ "Node.js")
-EL jdk lo descargas desde este enlase [openjdk](https://openjdk.java.net/projects/jdk-updates/ "OpenJdk")
+Para ese se debera instalar node.js [node.js](https://nodejs.org/es/ "Node.js").
+EL jdk lo descargas desde este enlase [openjdk](https://openjdk.java.net/projects/jdk-updates/ "OpenJdk").
 
 **__SE RECOMIENDA EL USO DE AMBIENTES VIRTUALES__**
