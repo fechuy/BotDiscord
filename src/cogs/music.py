@@ -1,9 +1,12 @@
+import discord
+import re
+import math
 from discord.ext import commands
 from discord import utils
 from discord import Embed
 import lavalink
 
-class MusicCog(commands.Cog):
+class Musica(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bot.music = lavalink.Client(self.bot.user.id)
@@ -11,7 +14,10 @@ class MusicCog(commands.Cog):
         self.bot.add_listener(self.bot.music.voice_update_handler, 'on_socket_response')
         self.bot.music.add_event_hook(self.track_hook)
         
-    @commands.command(name='join')
+    async def cog_before_invoke(self, ctx):
+        guild_check = ctx.guild is not None
+        
+    """@commands.command(name='join')
     async def join(self, ctx):
         print('Join commnad ;D')
         member = utils.find(lambda m: m.id == ctx.author.id, ctx.guild.members)
@@ -20,9 +26,9 @@ class MusicCog(commands.Cog):
             player = self.bot.music.player_manager.create(ctx.guild.id, endpoint=str(ctx.guild.region))
             if not player.is_connected:
                 player.store('channel', ctx.channel.id)
-                await self.connect_to(ctx.guild.id, str(vc.id))
+                await self.connect_to(ctx.guild.id, str(vc.id))"""
     
-    @commands.command(name='Yplay')
+    @commands.command(name='play')
     async def play(self, ctx, *, query):
         member = utils.find(lambda m: m.id == ctx.author.id, ctx.guild.members)
         if member is not None and member.voice is not None:
@@ -45,7 +51,6 @@ class MusicCog(commands.Cog):
                 
             embed = Embed()
             embed.description = query_result
-
             await ctx.channel.send(embed=embed)
 
             def check(m):
@@ -57,12 +62,13 @@ class MusicCog(commands.Cog):
             player.add(requester=ctx.author.id, track=track)
             if not player.is_playing:
                 await player.play()
+        
         except ValueError as value:
             print(value)
-            await ctx.send("Error de valor")
+        
         except Exception as error:
             print(error)
-            await ctx.send("Error al reproducir tu musica D:")
+            await ctx.send("Error al reproducir tu musica D:")    
             
     async def track_hook(self, event):
         if isinstance(event, lavalink.events.QueueEndEvent):
@@ -75,6 +81,38 @@ class MusicCog(commands.Cog):
         await ws.voice_state(str(guild_id), channel_id)
         # The above looks dirty, we could alternatively use `bot.shards[shard_id].ws` but that assumes
         # the bot instance is an AutoShardedBot.
+        
+    @commands.command(name='skip')
+    async def skip(self, ctx):
+        player = self.bot.music.player_manager.get(ctx.guild.id)        
+        await player.skip()
+        print("Saltaste una cancion D:")
+        await ctx.send("{0.author} Saltaste una cancion D:".format(ctx))
+    
+    @commands.command(name='queue')
+    async def queue(self, ctx, page: int = 1):
+        player = self.bot.music.player_manager.get(ctx.guild.id)
+        
+        items_per_page = 10
+        pages = math.ceil(len(player.queue) / items_per_page)
+
+        start = (page - 1) * items_per_page
+        end = start + items_per_page
+
+        queue_list = ''
+        
+        for index, track in enumerate(player.queue[start:end], start=start):
+            queue_list += f'`{index + 1}.` [**{track.title}**]({track.uri})\n'
+
+        embed = Embed(colour=discord.Color.blurple(), description=f'**{len(player.queue)} tracks**\n\n{queue_list} :D')
+        embed.set_footer(text=f'Pagina {page}/{pages}')
+        await ctx.send(embed=embed)
+        
+    @commands.command(name='pausa')
+    async def pause(self, ctx):
+        player = self.bot.music.player_manager.get(ctx.guild.id)
+        await player.stop()
+        #await player.set_pause(True)
         
     @commands.command(aliases=['dc'])
     async def disconnect(self, ctx):
@@ -100,4 +138,4 @@ class MusicCog(commands.Cog):
         await ctx.send('*⃣ | Disconnected.')
 
 def setup(bot):
-    bot.add_cog(MusicCog(bot))
+    bot.add_cog(Musica(bot))
