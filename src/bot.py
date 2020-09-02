@@ -14,6 +14,7 @@ async def on_ready():
     print('{0.user} online :D!'.format(yukiBot))
     yukiBot.load_extension('cogs.music')
     yukiBot.load_extension('actions.actions')
+    yukiBot.load_extension('reddit.reddit')
 
 @yukiBot.command(name='99', help='Responds with a random quote from Brooklyn 99')
 async def nine_nine(ctx):
